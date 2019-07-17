@@ -15,9 +15,14 @@ class Crawler::JyeoosController < Crawler::BaseController
     }
     uri.query = URI.encode_www_form(param)
     res = Net::HTTP.get_response(uri)
+    cookies = res.get_fields('set-cookie')
+    puts "cookies ius #{cookies}"
+    res.response['set-cookie']#.split(';')
     if !res.is_a?(Net::HTTPSuccess)
       render text: "获取内容失败 => #{uri}" 
     end
+
+    puts "res response cookie #{res.response['set-cookie'].split(';')} "
 
     html = Nokogiri::HTML(open(url))
     questions = html.search('fieldset.quesborder')
