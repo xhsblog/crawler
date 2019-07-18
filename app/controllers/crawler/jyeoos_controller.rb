@@ -48,6 +48,9 @@ class Crawler::JyeoosController < Crawler::BaseController
     # Crawlers::Jyeoo::QuestionCrawler.crawl(website)
     # render html: res.body
 
+    rr = Requester.new()
+    rr.get()
+
     remote = Remote.new(url)
     page = remote.get()
     html = Nokogiri::HTML(page)
