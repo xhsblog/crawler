@@ -2,8 +2,9 @@ require 'open-uri'
 
 class Crawler::JyeoosController < Crawler::BaseController
   def index
-    url = 'http://www.jyeoo.com/math2/ques/partialques?f=1&q=A~~&lbs=&so=1&pd=1&pi=3&r=0.7528943867196467'
-    # uri = URI.parse('http://www.jyeoo.com/math2/ques/partialques')
+    # url = 'http://www.jyeoo.com/math2/ques/partialques?f=1&q=A~~&lbs=&so=1&pd=1&pi=3&r=0.7528943867196467'
+    url = 'http://gzsx.cooco.net.cn/testpage/1/'
+    uri = URI.parse(url)
     # param = {
     #   f: 1,
     #   q: 'A~~',
@@ -48,23 +49,36 @@ class Crawler::JyeoosController < Crawler::BaseController
     # Crawlers::Jyeoo::QuestionCrawler.crawl(website)
     # render html: res.body
 
-    rr = Requester.new()
-    rr.get()
-
     remote = Remote.new(url)
     page = remote.get()
-    html = Nokogiri::HTML(page)
-    questions = html.search('fieldset.quesborder')
-    questions.each_with_index do |question|
-      id = question.to_h['id']
-      # puts "question shi #{question['id']}, id 是 #{id}"
-    end
-    puts "question shi #{questions.last.to_json}, id 是 #{'id'}"
+    
+    # html = Nokogiri::HTML(page)
+    # imgs = html.search('img')
+    # imgs.each do |img|
+    #   img = img.to_h
+    #   img['src'] = "#{uri.host}#{img['src']}"
+    # end
+
+    html = Nokogiri::HTML::DocumentFragment.parse(page)
+    imgs = html.at_css "img"
     # binding.pry
 
+    # @doc = Nokogiri::HTML::DocumentFragment.parse <<-EOHTML
+    #   <body>
+    #     <h2 class="h2-1">Three's Company</h2>
+    #     <h2 class="h2-2">hi, h2</h2>
+    #     <div>A love triangle.</div>
+    #   </body>
+    # EOHTML
+
+    imgs = html.search("img")
+    imgs.each(&->(i){i['src']= uri.scheme + '://' + uri.host + i['src']})
+    
+    render html: html.to_html.html_safe
+    # render html: imgs.to_html.html_safe
     
     # puts "这里是#{res}"
-    render html: page.html_safe
+    # render html: page.html_safe
     # respond_to do |format|
     #   format.html { render :text => res.body }
     # end
