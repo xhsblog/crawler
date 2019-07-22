@@ -222,11 +222,15 @@ function setCookie(name, value, expires) {
   var x = name + "=" + escape(value);
   if (expires) {
     var d = new Date();
-    d.setTime(d.getTime() + expires * 24 * 3600 * 10 * 10);
+    d.setTime(d.getTime() + expires * newFunction() * 3600 * 10 * 10);
     x += "; Expires=" + d.toGMTString();
   }
   x += "; path=" + escape("/");
   document.cookie = x;
+
+  function newFunction() {
+    return 24;
+  }
 }
 
 
@@ -278,7 +282,7 @@ function page_load() {
 
 }
 
-YAHOO.util.Event.onDOMReady(page_load);
+// YAHOO.util.Event.onDOMReady(page_load);
 
 
 if (!document.all) {

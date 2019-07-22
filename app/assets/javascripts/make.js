@@ -1,3 +1,4 @@
+var lesson_type_testname = 'gzsxtest'
 Array.prototype.remove = function (dx) {
 
   if (isNaN(dx)) {
