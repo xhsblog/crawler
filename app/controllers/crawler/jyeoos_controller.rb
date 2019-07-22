@@ -31,56 +31,16 @@ class Crawler::JyeoosController < Crawler::BaseController
     #   render text: "获取内容失败 => #{uri}" 
     # end
 
-    # puts "res response cookie #{res.response['set-cookie'].split(';')} "
-
-    # html = Nokogiri::HTML(open(url))
-    # questions = html.search('fieldset.quesborder')
-    # # binding.pry
-    # questions.each_with_index do |question|
-    #   id = question.to_h['id']
-    #   # puts "question shi #{question['id']}, id 是 #{id}"
-    # end
-    # puts "question shi #{questions.last.to_json}, id 是 #{'id'}"
-    # puts "Nokogiri::HTML(open(url)), #{Nokogiri::HTML(open(url))}"
-    # r = Net::HTTP.get(URI.parse('http://www.example.com/about.html'))
-    # puts "r is #{html.search('ul.ques-list')}"
-    # website = RemoteUrls.brand_uri
-    # CrawlerRunner.new(self.new(website), ::MechanizeAgent.new ).crawl if website.present?
-    # Crawlers::Jyeoo::QuestionCrawler.crawl(website)
-    # render html: res.body
-
-    remote = Remote.new(url)
-    page = remote.get()
-    
-    # html = Nokogiri::HTML(page)
-    # imgs = html.search('img')
-    # imgs.each do |img|
-    #   img = img.to_h
-    #   img['src'] = "#{uri.host}#{img['src']}"
-    # end
-
-    html = Nokogiri::HTML::DocumentFragment.parse(page)
-    imgs = html.at_css "img"
+    # remote = Remote.new(url)
+    # page = remote.get()
+    # html = Nokogiri::HTML::DocumentFragment.parse(page)
+    # divs = html.search('div.daan')
+    # ids = divs.map(&->(div){div['id'].split('-').last})
     # binding.pry
-
-    # @doc = Nokogiri::HTML::DocumentFragment.parse <<-EOHTML
-    #   <body>
-    #     <h2 class="h2-1">Three's Company</h2>
-    #     <h2 class="h2-2">hi, h2</h2>
-    #     <div>A love triangle.</div>
-    #   </body>
-    # EOHTML
-
-    imgs = html.search("img")
-    imgs.each(&->(i){i['src']= uri.scheme + '://' + uri.host + i['src']})
     
-    render html: html.to_html.html_safe
-    # render html: imgs.to_html.html_safe
-    
-    # puts "这里是#{res}"
-    # render html: page.html_safe
-    # respond_to do |format|
-    #   format.html { render :text => res.body }
-    # end
+    info = ::CooCo::CrawlerInfo.new()
+    is = info.ids_for(2)
+    puts "id is #{id}"
+    # render html: html.to_html.html_safe
   end
 end
